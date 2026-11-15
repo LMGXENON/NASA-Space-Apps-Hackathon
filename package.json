@@ -1,0 +1,11 @@
+{
+  "name": "helios",
+  "private": true,
+  "scripts": {
+    "build": "pnpm --filter web build",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm --filter @helios/core test",
+    "dev": "pnpm --filter web dev"
+  },
+  "packageManager": "pnpm@11.24.0"
+}

@@ -1,0 +1,654 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   Helios — NASA Mission Control theme.
+
+   Strictly the official NASA brand palette: Space Black, NASA Midnight Blue,
+   NASA Red, Lunar White/Silver and Kapton Gold. Telemetry is set in a mono-
+   spaced ground-control face, headers in a utilitarian sans; surfaces are matte
+   and the only glow is reserved for live data.
+   ========================================================================= */
+:root {
+  /* --- NASA brand ------------------------------------------------------- */
+  --nasa-red: #fc3d21;
+  --nasa-blue: #0b3d91;
+  --nasa-blue-light: #6f93d8;
+  --nasa-blue-deep: #072a66;
+  --kapton: #d4af37;
+  --space-black: #06070a;
+  --lunar-white: #ffffff;
+  --lunar-silver: #e0e0e0;
+
+  /* Surfaces: Ink Neutral Ramp (Unslop craft standard for instrumentation) */
+  --bg-0: #07080c;
+  --bg-1: #0d1017;
+  --bg-2: #121622;
+  --bg-3: #1a202e;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.16);
+
+  /* Accent: NASA International Orange carries key interaction and critical state */
+  --accent: #fc3d21;
+  --accent-soft: rgba(252, 61, 33, 0.12);
+  --accent-strong: #ff5b3c;
+
+  /* Semantic */
+  --sun: #ffe066;
+  --ok: #35e08a;
+  --warn: #d4af37;
+  --bad: #fc3d21;
+
+  /* Type roles from Unslop: Primary, Secondary, Muted */
+  --text: #f0f2f7;
+  --text-2: #a2a9b8;
+  --text-3: #6b7385;
+  --text-4: #484f60;
+
+  /* Type stacks: Clean, precise, technical (Geist per AI Design Skills) */
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+
+  /* Back-compat aliases used by scene overlays */
+  --neon-blue: #2ee6ff;
+  --neon-cyan: var(--lunar-white);
+  --gray-100: var(--text);
+  --gray-400: var(--text-2);
+  --gray-600: var(--text-3);
+
+  --radius: 8px;
+  --radius-sm: 4px;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: #000000;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+}
+*::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 99px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ------------------------------------------------------------------ surfaces */
+.panel {
+  background: var(--bg-1);
+  border-color: var(--line);
+}
+
+.card {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+.card-title::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 99px;
+  background: var(--accent);
+}
+
+.eyebrow {
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.mono,
+.kpi-value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------- controls */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg-3);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.15s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--line-strong);
+}
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.btn:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--accent);
+  border-color: transparent;
+  color: #ffffff;
+  font-weight: 600;
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent-strong);
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--text-2);
+}
+.btn-ghost:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+}
+
+.btn-on {
+  background: rgba(252, 61, 33, 0.18);
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.btn-icon {
+  width: 32px;
+  padding: 0;
+  flex: 0 0 auto;
+}
+
+.select,
+.input {
+  height: 32px;
+  width: 100%;
+  padding: 0 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background-color: #0c121e;
+  color: #ffffff;
+  font-size: 12.5px;
+  transition: border-color 0.15s ease;
+}
+.select:hover,
+.input:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+}
+.select {
+  appearance: none;
+  cursor: pointer;
+  padding-right: 28px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2.5 4.5 6 8l3.5-3.5' fill='none' stroke='%23a3adbe' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+select option {
+  background-color: #0c121e !important;
+  color: #ffffff !important;
+  padding: 6px 10px;
+}
+.input {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Switch (replaces bare checkboxes) */
+.switch {
+  appearance: none;
+  position: relative;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 19px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.18s ease;
+}
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 13px;
+  height: 13px;
+  border-radius: 99px;
+  background: #cfd6e2;
+  transition: transform 0.18s cubic-bezier(0.3, 0.8, 0.3, 1);
+}
+.switch:checked {
+  background: var(--accent);
+}
+.switch:checked::after {
+  transform: translateX(15px);
+  background: #04121c;
+}
+
+/* Range inputs read --pct (0..100) to draw a filled track. */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 18px;
+  background: transparent;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 5px;
+  border-radius: 99px;
+  background: linear-gradient(
+    90deg,
+    var(--accent) 0%,
+    var(--accent) calc(var(--pct, 50) * 1%),
+    rgba(255, 255, 255, 0.12) calc(var(--pct, 50) * 1%),
+    rgba(255, 255, 255, 0.12) 100%
+  );
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  margin-top: -4px;
+  border-radius: 99px;
+  background: #f2f6ff;
+  border: 2px solid var(--accent);
+  transition: transform 0.12s ease;
+}
+input[type="range"]:hover::-webkit-slider-thumb {
+  transform: scale(1.12);
+}
+input[type="range"]::-moz-range-track {
+  height: 5px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.12);
+}
+input[type="range"]::-moz-range-progress {
+  height: 5px;
+  border-radius: 99px;
+  background: var(--accent);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 11px;
+  height: 11px;
+  border-radius: 99px;
+  background: #f2f6ff;
+  border: 2px solid var(--accent);
+}
+
+/* --------------------------------------------------------------------- badges & chips */
+.chip,
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: 99px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+
+.badge-accent {
+  border-color: rgba(252, 61, 33, 0.35);
+  background: rgba(252, 61, 33, 0.12);
+  color: var(--accent-strong);
+}
+
+.badge-ok {
+  border-color: rgba(53, 224, 138, 0.35);
+  background: rgba(53, 224, 138, 0.12);
+  color: var(--ok);
+}
+
+.badge-warn {
+  border-color: rgba(212, 175, 55, 0.35);
+  background: rgba(212, 175, 55, 0.12);
+  color: var(--warn);
+}
+
+.badge-bad {
+  border-color: rgba(252, 61, 33, 0.35);
+  background: rgba(252, 61, 33, 0.12);
+  color: var(--bad);
+}
+
+.badge-neutral {
+  border-color: var(--line-strong);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-2);
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 99px;
+  flex: 0 0 auto;
+}
+
+/* -------------------------------------------------------------- viewport glow */
+.viewport-frame {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-0);
+}
+/* Aerospace corner brackets on the viewport. */
+.viewport-frame::before,
+.viewport-frame::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  z-index: 5;
+}
+.viewport-frame::before {
+  top: 8px;
+  left: 8px;
+  border-top: 1.5px solid rgba(255, 255, 255, 0.35);
+  border-left: 1.5px solid rgba(255, 255, 255, 0.35);
+}
+.viewport-frame::after {
+  bottom: 8px;
+  right: 8px;
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.35);
+  border-right: 1.5px solid rgba(255, 255, 255, 0.35);
+}
+
+.kpi-value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.modal-backdrop,
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 6, 10, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 16px;
+}
+
+.modal-window {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 680px;
+  max-height: 88vh;
+  border-radius: var(--radius);
+  border: 1px solid var(--line-strong);
+  background: var(--bg-1);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+  animation: modal-enter 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-header {
+  display: flex;
+  height: 48px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-1);
+  padding: 0 16px;
+}
+
+.modal-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.modal-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 20px;
+  color: var(--text-2);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.modal-footer {
+  display: flex;
+  height: 52px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--line);
+  background: var(--bg-1);
+  padding: 0 16px;
+}
+
+@keyframes modal-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ----------------------------------------------------------------- console tabs */
+.tab-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--line);
+}
+
+.tab-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.tab-nav-btn:hover:not(.tab-nav-btn-active) {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tab-nav-btn-active {
+  background: var(--bg-3);
+  border-color: var(--line-strong);
+  color: var(--text);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* ==========================================================================
+   Mission-control HUD primitives (viewport overlays)
+   ========================================================================== */
+.hud-frame {
+  background: rgba(13, 16, 23, 0.92);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+}
+
+.hud-label {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.hud-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 26px;
+  padding: 0 9px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.hud-tab:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+}
+.hud-tab-on {
+  background: var(--bg-3);
+  border-color: var(--line-strong);
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* Mission-critical command button (RECENTER ROVER). */
+.hud-command {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 32px;
+  padding: 0 13px;
+  border: 1px solid var(--nasa-red);
+  border-radius: var(--radius-sm);
+  background: rgba(252, 61, 33, 0.14);
+  color: var(--lunar-white);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.08s ease;
+}
+.hud-command:hover:not(:disabled) {
+  background: var(--nasa-red);
+  color: #140200;
+  border-color: var(--accent-strong);
+}
+.hud-command:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.hud-command:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@keyframes hud-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0.18;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hud-command,
+  .hud-tab,
+  .btn,
+  .dot {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Suppress development environment indicator badge */
+nextjs-portal,
+[data-nextjs-dev-indicator],
+[data-nextjs-toast],
+#next-logo {
+  display: none !important;
+}

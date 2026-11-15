@@ -1,0 +1,24 @@
+node_modules/
+.next/
+out/
+dist/
+*.tsbuildinfo
+.env*
+!.env.example
+.DS_Store
+tools/.horizons_cache/
+tools/.lola_cache/
+__pycache__/
+*.pyc
+package-lock.json
+coverage/
+test-results/
+playwright-report/
+.freebuff/
+.kilo/
+*.pdf
+*.pptx
+
+# Local documentation and presentation
+docs/
+apps/web/public/deck/
